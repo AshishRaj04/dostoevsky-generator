@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate Text - Dostoevsky</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <header>
+        <h1>Relive Fyodor Dostoevsky</h1>
+    </header>
+
+    <main>
+        <div class="image-wrapper">
+            <img src="./assets/foydor.jpeg"
+                alt="A portrait of Fyodor Dostoevsky">
+        </div>
+
+        <div class="content-wrapper">
+            <button id="generatorBtn" class="generate-btn">Generate Text</button>
+            <div id="result" class="result-text">Your generated text will appear here...</div>
+            <div id="errorMsg" class="error-text hidden"></div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025. Ashish Raj.</p>
+    </footer>
+
+    <script>
+        const generatorBtn = document.getElementById('generatorBtn');
+        const resultDiv = document.getElementById('result');
+        const errorDiv = document.getElementById('errorMsg');
+
+        generatorBtn.addEventListener('click', async () => {
+            try {
+                
+                resultDiv.textContent = "Generating...";
+
+                const res = await fetch("http://localhost:8000/api/generate", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({})
+                });
+
+                if (!res.ok) {
+                    throw new Error(`HTTP error! status: ${res.status}`);
+                }
+
+                const data = await res.json();
+
+                if (data.status === "success") {
+                    resultDiv.textContent = data.generated_text;
+                    errorDiv.classList.add('hidden');
+                    errorDiv.textContent = "";
+                } else {
+                    throw new Error(data.message || "An unknown error occurred.");
+                }
+
+            } catch (error) {
+                console.error("Error on catch block in generatorBtn click event:", error);
+                errorDiv.textContent = "An error occurred while generating text. Please try again later.";
+                errorDiv.classList.remove('hidden');
+                resultDiv.textContent = "Your generated text will appear here...";
+                return;
+            }
+        });
+    </script>
+</body>
+
+</html>
