@@ -51,11 +51,7 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 ### 5. Place Model Files
-You will need the trained model weights and tokenizer file. Place them in the correct directories:
-
-Place dostoevsky_model.weights.h5 inside the /checkpoints directory.
-
-Place tokenizer.pkl inside the /engine directory.
+The trained model weights and tokenizer file are provided in the /checkpoints and /engine directories respectivelly.
 
 ### 6. Run the Flask Application
 
